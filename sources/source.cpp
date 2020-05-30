@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
     boost::program_options::variables_map vm;
     try {
         store(parse_command_line(argc, argv, AllOpt), vm);
-	notify(vm);
+        notify(vm);
         if (vm.count("help") && !vm.count("config") && !vm.count("pack")
             && !vm.count("timeout") && !vm.count("install")) {
             std::cout << AllOpt << "\n";
@@ -88,8 +88,8 @@ int main(int argc, char* argv[]) {
 
             if (config == "Debug" || config == "Release") {
                 FirstRequest += config;
-                auto FirstProc = async::spawn([&BanThirdRequest, config, TimeOut,
-                &TimeSpent, FirstRequest, SecondRequest]() mutable {
+                auto FirstProc = async::spawn([&BanThirdRequest, config,
+                TimeOut, &TimeSpent, FirstRequest, SecondRequest]() mutable {
                     time_t FirstStart = std::chrono::system_clock::to_time_t(
                             std::chrono::system_clock::now());
 
@@ -110,8 +110,9 @@ int main(int argc, char* argv[]) {
                 });
             }
             if (vm.count("install") && BanThirdRequest == 0) {
-                auto SecondProc = async::spawn([&BanThirdRequest, &BanFourthRequest,
-                ThirdRequest, TimeOut, &TimeSpent]() mutable {
+                auto SecondProc = async::spawn([&BanThirdRequest,
+                &BanFourthRequest, ThirdRequest, TimeOut,
+                &TimeSpent]() mutable {
                     time_t TimeLeft = TimeOut - TimeSpent;
                     time_t start = std::chrono::system_clock::to_time_t(
                             std::chrono::system_clock::now());
@@ -124,8 +125,8 @@ int main(int argc, char* argv[]) {
                 });
             }
             if (vm.count("pack") && BanFourthRequest == 0) {
-                auto ThirdProc = async::spawn([&BanFourthRequest, FourthRequest,
-                TimeOut, &TimeSpent]() mutable {
+                auto ThirdProc = async::spawn([&BanFourthRequest,
+                FourthRequest, TimeOut, &TimeSpent]() mutable {
                     time_t TimeLeft = TimeOut - TimeSpent;
 
                     ProcessHandler(FourthRequest, TimeLeft);
